@@ -347,7 +347,7 @@ def postprocessData(all_minutesDF, dailyDF, sec_guideDF, config_dir, day_chg_inc
 
     print('Returning train with '+'{:,}'.format(len(train_minutesDF))+' rows and val with '+'{:,}'.format(len(val_minutesDF))+' rows.')
 
-    return(train_minutesDF[used_cols], val_minutesDF[used_cols])
+    return(train_close_pricesDF, train_minutesDF[used_cols], val_close_pricesDF, val_minutesDF[used_cols])
 
 
 def loadAndProcessData(comb_row, config_dir, day_chg_incs, minute_incs,
