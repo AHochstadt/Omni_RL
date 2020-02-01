@@ -133,7 +133,7 @@ def getExpectedPostprocessedCols(num_secs, day_chg_incs, minute_incs):
     chunk2 = ['Sec[SEC1]_Open_B', 'Sec[SEC1]_Open_A',
               'Sec[SEC1]_Open_B_chg[DAY]', 'Sec[SEC1]_Open_A_chg[DAY]']
     chunk3 = ['Sec[SEC2]_Open_B_Quotient', 'Sec[SEC2]_Open_A_Quotient']
-    chunk4 = ['O_B[SEC1]_diff[MINUTE]', 'O_A[SEC1]_diff[MINUTE]', 'H_B[SEC1]_diff[MINUTE]', 'H_A[SEC1]_diff[MINUTE]', 'L_B[SEC1]_diff[MINUTE]', 'L_A[SEC1]_diff[MINUTE]', 'C_B[SEC1]_diff[MINUTE]', 'C_A[SEC1]_diff[MINUTE]']
+    chunk4 = ['O_B[SEC1]_ema[MINUTE]', 'O_A[SEC1]_ema[MINUTE]', 'H_B[SEC1]_ema[MINUTE]', 'H_A[SEC1]_ema[MINUTE]', 'L_B[SEC1]_ema[MINUTE]', 'L_A[SEC1]_ema[MINUTE]', 'C_B[SEC1]_ema[MINUTE]', 'C_A[SEC1]_ema[MINUTE]']
     chunk5 = ['Count[SEC1]_sum[MINUTE]', 'B_TickImb[SEC1]_sum[MINUTE]', 'A_TickImb[SEC1]_sum[MINUTE]', 'M_TickImb[SEC1]_sum[MINUTE]']
     chunks = [chunk1, chunk2, chunk3, chunk4, chunk5]
     for chunk in chunks:
@@ -262,25 +262,25 @@ def postprocessData(all_minutesDF, dailyDF, sec_guideDF, config_dir, day_chg_inc
     # [x] - last minute_incs minutes
     print('getting data for last '+str(minute_incs)+' minutes')
     col_stems_to_add = ['Count', 'B_TickImb', 'A_TickImb', 'M_TickImb']
-    col_stems_to_diff = ['O_B', 'O_A', 'H_B', 'H_A', 'L_B', 'L_A', 'C_B', 'C_A']
-    cols_to_add, cols_to_diff = [], []
+    col_stems_to_ema = ['O_B', 'O_A', 'H_B', 'H_A', 'L_B', 'L_A', 'C_B', 'C_A']
+    cols_to_add, cols_to_ema = [], []
     for sec_num in range(1, num_secs+1):
         cols_to_add += [s+str(sec_num) for s in col_stems_to_add]
-        cols_to_diff += [s+str(sec_num) for s in col_stems_to_diff]
-    new_cols_add, new_cols_diff = [], []
+        cols_to_ema += [s+str(sec_num) for s in col_stems_to_ema]
+    new_cols_add, new_cols_ema = [], []
     for min_inc in minute_incs:
         new_cols_add += [col+'_sum'+str(min_inc) for col in cols_to_add]
-        new_cols_diff += [col+'_diff'+str(min_inc) for col in cols_to_diff]
+        new_cols_ema += [col+'_ema'+str(min_inc) for col in cols_to_ema]
 
-    # diff the diff columns, then fill in the first min_inc rows of each date with the BOD value
-    print('creating minute diff cols...')
+    # ema the ema columns, then fill in the first min_inc rows of each date with the BOD value
+    print('creating minute ema cols...')
     for min_inc in minute_incs:
-        all_minutesDF[[col+'_diff'+str(min_inc) for col in cols_to_diff]] = all_minutesDF[cols_to_diff].shift(min_inc)
+        all_minutesDF[[col+'_ema'+str(min_inc) for col in cols_to_ema]] = all_minutesDF[cols_to_ema].ewm(com=min_inc).mean()
         for date in tqdm(all_minutesDF.Date.unique()):
             date_subDF = all_minutesDF.loc[all_minutesDF.Date == date]
             repl_subDF = date_subDF.iloc[:min_inc]
-            all_minutesDF.loc[repl_subDF.index, [col+'_diff'+str(min_inc) for col in cols_to_diff]] = \
-                repl_subDF[cols_to_diff].iloc[0].values
+            all_minutesDF.loc[repl_subDF.index, [col+'_ema'+str(min_inc) for col in cols_to_ema]] = \
+                repl_subDF[cols_to_ema].iloc[0].values
 
     # add the add columns, making sure not to go past the current date
     print('creating minute add cols...')
