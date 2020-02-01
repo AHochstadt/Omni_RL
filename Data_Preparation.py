@@ -1,4 +1,4 @@
-from utils import in_notebook, utcToChi, getChiTimeNow
+from utils import in_notebook, utcToChi, getChiTimeNow, readCSV
 
 import pandas as pd
 import numpy as np
@@ -359,20 +359,19 @@ def loadAndProcessData(comb_row, config_dir, day_chg_incs, minute_incs,
     other_secs = comb_row[[col for col in comb_row.index if (col[:3]=='Sec' and col!='Sec1')]].values
     other_secs = [i for i in other_secs if type(i) == str]
     print('No pre-loaded data found. Loading data for '+comb_row.Sec1+' and '+','.join(other_secs))
-    sec1_minuteDF = pd.read_csv(minute_dir+comb_row.Sec1+'.csv', parse_dates=['Date', 'Minute'])
-    sec1_minuteDF.Date = sec1_minuteDF.Date.dt.date
+    sec1_minuteDF = readCSV(minute_dir+comb_row.Sec1+'.csv')
     sec1_minuteDF = sec1_minuteDF.loc[(sec1_minuteDF.Date >= comb_row.TrainStartDate) & (sec1_minuteDF.Date <= comb_row.ValEndDate)].reset_index(drop=True)
 
     print('Loading minuteDF for '+comb_row.Sec2)
-    other_secs_minuteDF = pd.read_csv(minute_dir+comb_row.Sec2+'.csv', parse_dates=['Date', 'Minute'])[['Product', 'Date', 'Minute', 'O_B', 'O_A', 'H_B', 'H_A', 'L_B', 'L_A', 'C_B', 'C_A', 'Count', 'B_TickImb', 'A_TickImb', 'M_TickImb']]
+    other_secs_minuteDF = readCSV(minute_dir+comb_row.Sec2+'.csv')[['Product', 'Date', 'Minute', 'O_B', 'O_A', 'H_B', 'H_A', 'L_B', 'L_A', 'C_B', 'C_A', 'Count', 'B_TickImb', 'A_TickImb', 'M_TickImb']]
     for sec in other_secs[1:]:
         print('Loading minuteDF for '+sec)
-        other_secs_minuteDF = other_secs_minuteDF.append(pd.read_csv(minute_dir+sec+'.csv', parse_dates=['Date', 'Minute'])[['Product', 'Date', 'Minute', 'O_B', 'O_A', 'H_B', 'H_A', 'L_B', 'L_A', 'C_B', 'C_A', 'Count', 'B_TickImb', 'A_TickImb', 'M_TickImb']], ignore_index=True)
+        other_secs_minuteDF = other_secs_minuteDF.append(readCSV(minute_dir+sec+'.csv')[['Product', 'Date', 'Minute', 'O_B', 'O_A', 'H_B', 'H_A', 'L_B', 'L_A', 'C_B', 'C_A', 'Count', 'B_TickImb', 'A_TickImb', 'M_TickImb']], ignore_index=True)
     other_secs_minuteDF.Date = other_secs_minuteDF.Date.dt.date
     other_secs_minuteDF = other_secs_minuteDF.loc[(other_secs_minuteDF.Date >= comb_row.TrainStartDate) & (other_secs_minuteDF.Date <= comb_row.ValEndDate)].reset_index(drop=True)
     print('other_secs_minuteDF has '+str(len(other_secs_minuteDF))+' rows.')
     print('sec1_minuteDF has '+str(len(sec1_minuteDF))+' rows.')
-    print("pd.read_csvs complete. Subsetting dates...")
+    print("readCSVs complete. Subsetting dates...")
 
     # [x] subset for dates
     dates_in_common = set(sec1_minuteDF.Date.unique())
@@ -498,13 +497,13 @@ def processData(comb_row, config_dir, day_chg_incs, minute_incs):
 
             print('Columns passed the check. Loading postprocessed data.')
             print('loading train_close_pricesDF')
-            train_close_pricesDF = pd.read_csv(postprocessed_data_dir+'train_close_prices.csv')
+            train_close_pricesDF = readCSV(postprocessed_data_dir+'train_close_prices.csv')
             print('loading train_minutesDF')
-            train_minutesDF = pd.read_csv(postprocessed_data_dir+'train_minutesDF.csv')
+            train_minutesDF = readCSV(postprocessed_data_dir+'train_minutesDF.csv')
             print('loading val_close_pricesDF')
-            val_close_pricesDF = pd.read_csv(postprocessed_data_dir+'val_close_prices.csv')
+            val_close_pricesDF = readCSV(postprocessed_data_dir+'val_close_prices.csv')
             print('loading val_minutesDF')
-            val_minutesDF = pd.read_csv(postprocessed_data_dir+'val_minutesDF.csv')
+            val_minutesDF = readCSV(postprocessed_data_dir+'val_minutesDF.csv')
             print('loading complete.')
             return train_close_pricesDF, train_minutesDF, val_close_pricesDF, val_minutesDF
         else:
@@ -528,20 +527,18 @@ def processData(comb_row, config_dir, day_chg_incs, minute_incs):
     else:
         print('Data found! Loading data...')
         # [x] check the order of other_secs
-        sec_guideDF = pd.read_csv(sec_guide_fn)
+        sec_guideDF = readCSV(sec_guide_fn)
         assert(comb_row.Sec1 == sec_guideDF.iloc[0].Sec)
         other_secs_comb_row = comb_row[[col for col in comb_row.index if (col[:3]=='Sec' and col!='Sec1')]].values
         other_secs_comb_row = [i for i in other_secs_comb_row if type(i)==str]
         other_secs_sec_guide = sec_guideDF.iloc[1:].Sec.values
         assert(np.all(other_secs_comb_row == other_secs_sec_guide))
         # [x] check the dates
-        dailyDF = pd.read_csv(daily_fn, parse_dates=['Date'])
-        dailyDF.Date = dailyDF.Date.dt.date
+        dailyDF = readCSV(daily_fn)
         first_date = dailyDF.Date.iloc[0]
         last_date = dailyDF.Date.iloc[-1]
         assert abs((pd.to_datetime(first_date) - pd.to_datetime(comb_row.TrainStartDate)).days) < 20, str(first_date) +'   '+str(comb_row.TrainStartDate)  # may want to relax these
         assert abs((pd.to_datetime(last_date) - pd.to_datetime(comb_row.ValEndDate)).days) < 20, str(last_date) +'   '+str(comb_row.ValEndDate)
-        all_minutesDF = pd.read_csv(all_minutes_fn, parse_dates=['Date', 'Minute'])
-        all_minutesDF.Date = all_minutesDF.Date.dt.date
+        all_minutesDF = readCSV(all_minutes_fn)
         print('Data/ load complete.')
     return postprocessData(all_minutesDF, dailyDF, sec_guideDF, config_dir, day_chg_incs, minute_incs)
