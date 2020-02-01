@@ -19,3 +19,15 @@ def utcToChi(utc_dt):
 def getChiTimeNow():
     utc_dt = pd.datetime.utcnow()
     return(utcToChi(utc_dt))
+
+def readCSV(filename, nrows=None):
+    """A custom pandas csv reader which handles dates appropriately by default"""
+    cols = pd.read_csv(filename, nrows=1).columns
+    date_cols = [c for c in ['Date', 'date'] if c in cols]
+    timestep_cols = [c for c in ['Minute', 'Minutes', 'minute', 'minutes',
+                                 'Second', 'Seconds', 'second', 'seconds',
+                                 'Time', 'time', 'Timestep', 'timestep'] if c in cols]
+    DF = pd.read_csv(filename, nrows=nrows, parse_dates=date_cols+timestep_cols)
+    for c in date_cols: DF[c] = DF[c].dt.date
+    return DF
+    
