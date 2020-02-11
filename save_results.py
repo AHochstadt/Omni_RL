@@ -18,7 +18,7 @@ def createPnlVisPlot(config_dir, desired_vis_plot_fn, ts_window_size=5000):
     """
     # [x] find and load the trade_log
     #     filenames are pnl_vis_<model_name>_<sess_type>_<episode>_<total, best, worst>.png
-    print('creating pnl vis plot:' ,desired_vis_plot_fn)
+    print('creating pnl vis plot:', desired_vis_plot_fn)
 
     #we need to first remove the model_str, then we can split by '_'
     before_model_str = desired_vis_plot_fn.split('[')[0]
@@ -43,13 +43,12 @@ def createPnlVisPlot(config_dir, desired_vis_plot_fn, ts_window_size=5000):
 
     #subset the log if plotting best or worst window
     if plot_type == 'best':
-
         rolling_sum = full_logDF.TotalPNL.rolling(window=ts_window_size).sum()
-        idx_max = rolling_sum.idxmax()
+        idx_max = rolling_sum[::-1].idxmax() # the [::-1] selects the last occurence of idxmax
         full_logDF = full_logDF[(idx_max-ts_window_size):idx_max]
     if plot_type == 'worst':
         rolling_sum = full_logDF.TotalPNL.rolling(window=ts_window_size).sum()
-        idx_min = rolling_sum.idxmin()
+        idx_min = rolling_sum[::-1].idxmin() # the [::-1] selects the last occurence of idxmax
         full_logDF = full_logDF[(idx_min-ts_window_size):idx_min]
 
     full_logDF['CumPNL'] = full_logDF.TotalPNL.cumsum()
@@ -71,7 +70,8 @@ def createPnlVisPlot(config_dir, desired_vis_plot_fn, ts_window_size=5000):
     ax2.set_ylabel('PNL')
 
     # [x] Add pnl=0 line
-    ax2.hlines(y=0, xmin=full_logDF.Minute.iloc[0] , xmax=full_logDF.Minute.iloc[-1], colors='0.75', linestyles='dashed')
+    # ax2.hlines(y=0, xmin=full_logDF.Minute.iloc[0] , xmax=full_logDF.Minute.iloc[-1], colors='0.75', linestyles='dashed')
+    ax2.axhline(y=0, color='0.75', linestyle='dashed') # using this instead of hlines frees us from supplying xmin and xmax
 
     # save plot
     plt.savefig(config_dir+'Plots/'+desired_vis_plot_fn, dpi=256)
@@ -203,7 +203,7 @@ def createModelProgressSummary(config_dir, model_str):
 
     # NumTradespTS / TsSeen
     plotProgSum(config_dir, model_str, model_progDF=model_progDF,
-                x_col='AvgTsSeen', y_col='NumTrades', scale_col='TsSeen',
+                x_col='AvgTsSeen', y_col='NumTradespTS', scale_col='TsSeen',
                 y_label='NumTrades/TsSeen')
 
     # LrgSprPct / LossUpdate
