@@ -259,37 +259,37 @@ def createModelProgressSummary(config_dir, model_str):
     # [x] handle images
     # PNL/TsSeen
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'PNL_over_TsSeen'+'.png'))
+                            src='Plots/'+model_str+'_'+'PNL_over_TsSeen'+'.png'))
 
     # AvgLogLoss
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'AvgLogLoss'+'.png'))
+                            src='Plots/'+model_str+'_'+'AvgLogLoss'+'.png'))
 
     # NumTrades/TsSeen
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'NumTrades_over_TsSeen'+'.png'))
+                            src='Plots/'+model_str+'_'+'NumTrades_over_TsSeen'+'.png'))
 
     model_prog_div.append(model_prog_soup.new_tag('br'))
     # LrgSprPct
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'LrgSprPct'+'.png'))
+                            src='Plots/'+model_str+'_'+'LrgSprPct'+'.png'))
 
     # LrgSprLikely
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'LrgSprLikely'+'.png'))
+                            src='Plots/'+model_str+'_'+'LrgSprLikely'+'.png'))
 
     # LrgSprPref
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'LrgSprPref'+'.png'))
+                            src='Plots/'+model_str+'_'+'LrgSprPref'+'.png'))
 
     model_prog_div.append(model_prog_soup.new_tag('br'))
     # PositionPct
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'PositionPct'+'.png'))
+                            src='Plots/'+model_str+'_'+'PositionPct'+'.png'))
 
     # Sharpe
     model_prog_div.append(model_prog_soup.new_tag('img', height='400',
-                            src=config_dir+'Plots/'+model_str+'_'+'Sharpe'+'.png'))
+                            src='Plots/'+model_str+'_'+'Sharpe'+'.png'))
 
     return model_prog_div
 
@@ -399,13 +399,13 @@ def updateSummarySheet(config_dir):
             model_table = Soup(best1DF.loc[i:i].to_html(col_space=50, justify='center'))
             model_table.table['style'] = 'white-space: no-wrap'
             model_total_pnl_vis_plot = summary_soup.new_tag('img', height='400',
-                    src=config_dir+'Plots/'+'pnl_vis_'+best1DF.loc[i].Model+'_'+best1DF.loc[i].SessType+'_'+
+                    src='Plots/'+'pnl_vis_'+best1DF.loc[i].Model+'_'+best1DF.loc[i].SessType+'_'+
                         str(best1DF.loc[i].Epi)+'_total.png')
             model_worst_pnl_vis_plot = summary_soup.new_tag('img', height='400',
-                    src=config_dir+'Plots/'+'pnl_vis_'+best1DF.loc[i].Model+'_'+best1DF.loc[i].SessType+'_'+
+                    src='Plots/'+'pnl_vis_'+best1DF.loc[i].Model+'_'+best1DF.loc[i].SessType+'_'+
                         str(best1DF.loc[i].Epi)+'_worst.png')
             model_best_pnl_vis_plot = summary_soup.new_tag('img', height='400',
-                    src=config_dir+'Plots/'+'pnl_vis_'+best1DF.loc[i].Model+'_'+best1DF.loc[i].SessType+'_'+
+                    src='Plots/'+'pnl_vis_'+best1DF.loc[i].Model+'_'+best1DF.loc[i].SessType+'_'+
                         str(best1DF.loc[i].Epi)+'_best.png')
 
             new_best_models_div.append(model_h3)
