@@ -253,7 +253,7 @@ def createModelProgressSummary(config_dir, model_str):
         fmlDF = fmlDF.append(model_progDF.iloc[int(n_epis/2-n_epi_samples/2):int(n_epis/2-n_epi_samples/2)+n_epi_samples])
         fmlDF = fmlDF.append(model_progDF.iloc[-n_epi_samples:])
     fml_table_soup = Soup(fmlDF.to_html(col_space=50, justify='center'))
-    fml_table_soup.table['style'] = 'white-space: no-wrap'
+    fml_table_soup.table['style'] = 'white-space: nowrap'
     model_prog_div.append(fml_table_soup)
 
     # [x] handle images
@@ -334,7 +334,7 @@ def updateSummarySheet(config_dir):
         best_models_table = summary_soup.select('#best_models_table')
         best_models_html = best3DF.to_html(table_id = 'best_models_table', index=False, col_space=50, justify='center')
         best_models_soup = Soup(best_models_html)
-        best_models_soup.table['style'] = 'white-space: no-wrap'
+        best_models_soup.table['style'] = 'white-space: nowrap'
         if len(best_models_table) == 0:
             print('No best_models_table found. Creating one.')
             best_models_h1 = findMod(summary_soup, 'h1', 'Best Models Summary')
@@ -397,7 +397,7 @@ def updateSummarySheet(config_dir):
             model_h3 = summary_soup.new_tag('h3')
             model_h3.string = best1DF.loc[i].Model
             model_table = Soup(best1DF.loc[i:i].to_html(col_space=50, justify='center'))
-            model_table.table['style'] = 'white-space: no-wrap'
+            model_table.table['style'] = 'white-space: nowrap'
             model_total_pnl_vis_plot = summary_soup.new_tag('img', height='400',
                     src='Plots/'+'pnl_vis_'+best1DF.loc[i].Model+'_'+best1DF.loc[i].SessType+'_'+
                         str(best1DF.loc[i].Epi)+'_total.png')
