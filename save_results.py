@@ -334,6 +334,16 @@ def updateSummarySheet(config_dir):
         best_models_table = summary_soup.select('#best_models_table')
         best_models_html = best3DF.to_html(table_id = 'best_models_table', index=False, col_space=50, justify='center')
         best_models_soup = Soup(best_models_html)
+        # [x] change the model names to link to the model sections
+        tbody_soup = best_models_soup.tbody
+        trs = tbody_soup.find_all('tr')
+        for tr in trs:
+            first_td = tr.find_all('td')[0] #this is the td with the model name
+            td_model_str = '['+']'.join('['.join(first_td.text.split('[')[1:]).split(']')[:-1])+']'
+            a_tag = summary_soup.new_tag('a', href='#'+getHTMLIDStrFromModelStr(td_model_str))
+            a_tag.string = first_td.text
+            first_td.string = ''
+            first_td.append(a_tag)
         best_models_soup.table['style'] = 'white-space: nowrap'
         if len(best_models_table) == 0:
             print('No best_models_table found. Creating one.')
@@ -394,8 +404,11 @@ def updateSummarySheet(config_dir):
         # [x] change the html to reflect the new plots
         new_best_models_div = summary_soup.new_tag('div', id='best_models_div')
         for i in best1DF.index:
+            # wrap a link in h3 so it links to the Model Progress Summary
             model_h3 = summary_soup.new_tag('h3')
-            model_h3.string = best1DF.loc[i].Model
+            model_a = summary_soup.new_tag('a', href='#'+getHTMLIDStrFromModelStr(best1DF.loc[i].Model))
+            model_a.string = best1DF.loc[i].Model
+            model_h3.append(model_a)
             model_table = Soup(best1DF.loc[i:i].to_html(col_space=50, justify='center'))
             model_table.table['style'] = 'white-space: nowrap'
             model_total_pnl_vis_plot = summary_soup.new_tag('img', height='400',
