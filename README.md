@@ -38,12 +38,15 @@ Trade/Pnl visualization: all episode, the worst segment of the episode, and the 
 [![N|Solid](https://lh3.googleusercontent.com/gX-D6C7Hjf4G3O4ZaVXF6WSBdl5WXEIoDwpfRwuDSYfa1vJuKxgfBnRveCF4h_72FGL6_irrHeyLRThA4VRoD0EzI2ZJ_IokYpIzWeAE_WURQ4cqaec9m68-ajDJpIOxRAsbWmxxzQ=w2400)](https://lh3.googleusercontent.com/gX-D6C7Hjf4G3O4ZaVXF6WSBdl5WXEIoDwpfRwuDSYfa1vJuKxgfBnRveCF4h_72FGL6_irrHeyLRThA4VRoD0EzI2ZJ_IokYpIzWeAE_WURQ4cqaec9m68-ajDJpIOxRAsbWmxxzQ=w2400)
 
 Summary of key episodes, plus visualization for how model is progressing over time.
+
 [![N|Solid](https://lh3.googleusercontent.com/aYkRNgdw-V0ZLGFZN3-NfvqM_t5CIKGTh7VYakhbIwGS5Xezt28fihAihZkJax0MMDKRjgc-DaLu085ta_G0wenqpfeDDlU8h97R9MyW9kDd2cDSKpanp47hCaKTADQouMvskaWJwA=w2400)](https://lh3.googleusercontent.com/aYkRNgdw-V0ZLGFZN3-NfvqM_t5CIKGTh7VYakhbIwGS5Xezt28fihAihZkJax0MMDKRjgc-DaLu085ta_G0wenqpfeDDlU8h97R9MyW9kDd2cDSKpanp47hCaKTADQouMvskaWJwA=w2400)
 
 Visualization for how likely the agent is to cross large bid-ask spreads
+
 [![N|Solid](https://lh3.googleusercontent.com/Qskg-v_0HT98bPKndTTaUKlDurgmOaE1QpLBk9D8DU3KwOOg_y1T_eAI51ibmC9w5OLrwK3Tta5jBAit_-QZDZHf6oWDFcRmbSdoHTPfFNZvGwm4gP3FkCoi3Oalu4_XrBWewQ7NXg=w2400)](https://lh3.googleusercontent.com/Qskg-v_0HT98bPKndTTaUKlDurgmOaE1QpLBk9D8DU3KwOOg_y1T_eAI51ibmC9w5OLrwK3Tta5jBAit_-QZDZHf6oWDFcRmbSdoHTPfFNZvGwm4gP3FkCoi3Oalu4_XrBWewQ7NXg=w2400)
 
 Percent of timesteps spent flat, long, and short, plus sharpe on the right.
+
 [![N|Solid](https://lh3.googleusercontent.com/aSbvRr_aII_IbRTuFS_vaEFRaz-iuNUcfb7RpLXUS_4Zn8zunMchFlT65FWCSLEB8FlRKbTjYpgM7n3CuYz3m1xdi5bMw9eQ4gJO3JoC0KJNaxwsWZYxnoDRYGfZyDL2ZoEC5j5kPA=w2400)](https://lh3.googleusercontent.com/aSbvRr_aII_IbRTuFS_vaEFRaz-iuNUcfb7RpLXUS_4Zn8zunMchFlT65FWCSLEB8FlRKbTjYpgM7n3CuYz3m1xdi5bMw9eQ4gJO3JoC0KJNaxwsWZYxnoDRYGfZyDL2ZoEC5j5kPA=w2400)
 
 # Results
