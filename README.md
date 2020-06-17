@@ -27,9 +27,8 @@ The models are reinforcement learning models. Their possible architectures are d
 - DQN (normal DQN)
 - Target DQN (target network weights are fixed for some time increment)
 - Double DQN (action is taken with a policy network, Q Value is calculated using a separate network).  
-- 
 
-In terms of the network architectures, they range from simple 2-layer networks to 10-layer with Dropout. Realistically, more should be tried here, including convolutional nets.
+In terms of the network architectures, they range from simple 2-layer networks to 10-layer with Dropout. Realistically, more should be tried here, including convolutional layers.
 
 ##### Model/bundle evaluation
 As `train.py` trains and iterates our models, it also takes momentary breaks to evaluate the models. Here, we set the probability of taking a random action to 0, and we do not update any network weights.
