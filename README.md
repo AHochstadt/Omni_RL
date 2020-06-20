@@ -52,6 +52,10 @@ Percent of timesteps spent flat, long, and short, plus sharpe on the right.
 [![N|Solid](https://lh3.googleusercontent.com/aSbvRr_aII_IbRTuFS_vaEFRaz-iuNUcfb7RpLXUS_4Zn8zunMchFlT65FWCSLEB8FlRKbTjYpgM7n3CuYz3m1xdi5bMw9eQ4gJO3JoC0KJNaxwsWZYxnoDRYGfZyDL2ZoEC5j5kPA=w2400)](https://lh3.googleusercontent.com/aSbvRr_aII_IbRTuFS_vaEFRaz-iuNUcfb7RpLXUS_4Zn8zunMchFlT65FWCSLEB8FlRKbTjYpgM7n3CuYz3m1xdi5bMw9eQ4gJO3JoC0KJNaxwsWZYxnoDRYGfZyDL2ZoEC5j5kPA=w2400)
 
 # Results
-There were no strategies which are promising enough to warrant excitement. Whenever a strategy generates a positive Sharpe, it is clearly unstable (subsequent episodes of training do not replicate well). However, there is a very pessimistic execution assumption underlying this study, namely that each trade must completely cross the bid-ask spread, and the only possible positions are long one contract, short one contract, or flat. These must be relaxed for more promising results to surface, but relaxing these assumptions opens up a different world of uncertainty.
+There were no strategies which are promising enough to warrant excitement. Whenever a strategy generates a positive Sharpe, it is clearly unstable (subsequent episodes of training do not replicate well). 
+
+As mentioned above, additional Neural Net architectures might need to be tried, including ConvNets, ResNets and generally deeper architectures. 
+
+Additionally, there is a very pessimistic execution assumption underlying this study, namely that each trade must completely cross the bid-ask spread, and the only possible positions are long one contract, short one contract, or flat. These must be relaxed for more promising results to surface, but relaxing these assumptions opens up a different world of uncertainty.
 
 Please feel free to reach out to andrew.hochstadt@gmail.com if you have any further questions.
